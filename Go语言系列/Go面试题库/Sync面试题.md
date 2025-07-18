@@ -47,11 +47,11 @@ type Mutex struct {
 
 state表示锁的状态，有锁定、被唤醒、饥饿模式等，并且是用state的二进制位来标识的，不同模式下会有不同的处理方式
 
-![](../../assets/img/go语言系列/go面试题库/Sync面试题/0c8666c9f2a2a24045c7eb16c163a8e9.png)
+![](https://golangstar.cn/assets/img/go语言系列/go面试题库/Sync面试题/0c8666c9f2a2a24045c7eb16c163a8e9.png)
 
 sema表示信号量，mutex阻塞队列的定位是通过这个变量来实现的，从而实现goroutine的阻塞和唤醒
 
-![](../../assets/img/go语言系列/go面试题库/Sync面试题/cacc64449f25f934740cbdf201affbf3.png)
+![](https://golangstar.cn/assets/img/go语言系列/go面试题库/Sync面试题/cacc64449f25f934740cbdf201affbf3.png)
 
 ## 5. Mutex 有几种模式？
 
@@ -189,7 +189,7 @@ type entry struct {
 
 
 
-![](../../assets/img/go语言系列/go面试题库/Sync面试题/10a8fc3bc4fe8c3b2d23a0832aabb5f2.png)
+![](https://golangstar.cn/assets/img/go语言系列/go面试题库/Sync面试题/10a8fc3bc4fe8c3b2d23a0832aabb5f2.png)
 
 ## 11. read map和dirty map之间有什么关联？
 

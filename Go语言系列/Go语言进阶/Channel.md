@@ -230,11 +230,11 @@ func main() {
 无缓冲`channel`可以理解为同步模式，即写入一个，如果没有消费者在消费，写入就会阻塞。
 有缓冲`channel`可以理解为异步模式。即写入消息之后，即使还没被消费，只要队列没满，就可继续写入。如图所示：
 
-![](../../assets/img/go语言系列/channel/channel1.png)
+![](https://golangstar.cn/assets/img/go语言系列/channel/channel1.png)
 
 这里可能会问，如果有缓冲`channel`队列满了，那不就退化到同步了么？是的，如果队列满了，发送还是会阻塞。
 
-![](../../assets/img/go语言系列/channel/channel2.png)
+![](https://golangstar.cn/assets/img/go语言系列/channel/channel2.png)
 
 但是我们来反向思考下，如果有缓冲`channel`长期都处于满队列情况，那何必用有缓冲。所以预期在正常情况下，有缓冲`channel`都是异步交互的。
 

@@ -48,7 +48,7 @@ func WithValue(parent Context, key, val interface{}) Context
 ```
 基于当前`context`，每个`with`函数都会创建出一个新的`context`，这样类似于我们熟悉的树结构，当前`context`称为父`context`，派生出的新`context`称为子`context`。就像下面的`context`树结构：
 
-![Context树结构](../../assets/img/go语言系列/context/context1.png)
+![Context树结构](https://golangstar.cn/assets/img/go语言系列/context/context1.png)
 
 通过根`context`，通过四个`with`系列方法可以派生出四种类型的`context`，每种`context`又可以通过同样的方式调用`with`系列方法继续向下派生新的`context`，整个结构像一棵树。
 
@@ -61,7 +61,7 @@ func WithValue(parent Context, key, val interface{}) Context
 ### 并发控制
 对于一般的服务器而言，都是一致运行着的，等待接收来自客户端或者浏览器的请求做出响应，思考这样一种场景，后台微服务架构中，一般服务器在收到一个请求之后，如果逻辑复杂，不会在一个`goroutine`中完成，而是会创建出很多的`goroutine`共同完成这个请求，就像下面这种情况:
 
-![并发场景](../../assets/img/go语言系列/context/context2.png)
+![并发场景](https://golangstar.cn/assets/img/go语言系列/context/context2.png)
 
 有一个请求过来之后，先经过第一次`rpc`调用，然后再到`rpc2`，后面创建执行两个`rpc`，`rpc4`里又有一次`rpc`调用`rpc5`，等所有`rpc`调用成功后，返回结果。假如在整个调用过程中，`rpc1`发生了错误，如果没有`context`存在的话，我们还是得等所有的`rpc`都执行完才能返回结果，这样其实浪费了不少时间，因为一旦出错，我们完全可以直接在`rpc1`这里就返回结果了，不用等到后续的`rpc`都执行完。
 假设我们在`rpc1`直接返回失败，不等后续的`rpc`继续执行，那么其实后续的`rpc`执行就是没有意义的，浪费计算和IO资源而已。引入`context`之后，就可以很好的处理这个问题，在不需要子`goroutine`执行的时候，可以通过`context`通知子`goroutine`优雅的关闭。

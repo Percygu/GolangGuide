@@ -19,7 +19,7 @@ GMP是Go运行时的核心调度模型
 
 就是这个模型让Go能在少量线程上调度海量goroutine，是Go高并发的基础。
 
-![](../../assets/img/go语言系列/go面试题库/GMP面试题/image-1.png)
+![](https://golangstar.cn/assets/img/go语言系列/go面试题库/GMP面试题/image-1.png)
 
 ## 2. 什么是Go scheduler
 
@@ -47,7 +47,7 @@ Go语言采用的是抢占式调度策略。Go 会启动一个线程，一直运
 
 **M会优先检查本地队列（LRQ）**：从当前P的LRQ里`runqget`一个G。（无锁CAS），如果本地队列没有可运行G，**再次检查全局队列（GRQ）**&#x53BB;全局队列里`globrunqget`找。（需要加锁）；如果还没有，就**检查网络轮询器（netpoll），**&#x5C31;去`netpoll`里看看有没有因为网络IO就绪的G。（非阻塞模式），依然没有获取到可运行G，则会**从别的P偷（steal work），这个偷的过程是**随机找一个别的P，从它的LRQ里偷一半的G过来。
 
-![](../../assets/img/go语言系列/go面试题库/GMP面试题/image-2.png)
+![](https://golangstar.cn/assets/img/go语言系列/go面试题库/GMP面试题/image-2.png)
 
 ## 6. GMP能不能去掉P层？会怎么样？
 
@@ -77,7 +77,7 @@ m0是在Go启动时创建的第一个M，m0对应程序启动时的主系统线�
 
 m0主要负责执行Go程序的**启动流程**，包括调度器初始化、内存管理器初始化、垃圾回收器设置等。它会创建并运行第一个用户goroutine来执行`main.main`函数。在程序运行期间，m0也参与正常的goroutine调度，和其他M没有本质区别。m0在程序退出时还负责处理清理工作，比如等待其他goroutine结束、执行defer函数等。
 
-![](../../assets/img/go语言系列/go面试题库/GMP面试题/image.png)
+![](https://golangstar.cn/assets/img/go语言系列/go面试题库/GMP面试题/image.png)
 
 ## 9. g0是一个怎样的协程，有什么用？
 

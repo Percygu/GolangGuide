@@ -69,11 +69,11 @@ func main() {
 
 这里在第12行定义了一个接口类型实例efc，此时还未对efc赋值，它的结构如下图所示：
 
-![](../../assets/img/go语言系列/interface原理/image.png)
+![](https://golangstar.cn/assets/img/go语言系列/interface原理/image.png)
 
 在第13行，对efc赋值了一个Apple类型的变量之后，其底层结构表现如下图所示：
 
-![](../../assets/img/go语言系列/interface原理/image-1.png)
+![](https://golangstar.cn/assets/img/go语言系列/interface原理/image-1.png)
 
 其中\_type指针指向a变量的类型元数据，data指针指向a变量的值
 
@@ -169,11 +169,11 @@ func main() {
 
 在程序第28行，赋值之前，ifc的机构如下图所：
 
-![](../../assets/img/go语言系列/interface原理/image-2.png)
+![](https://golangstar.cn/assets/img/go语言系列/interface原理/image-2.png)
 
 在第29行，给ifc赋值一个包含方法的结构体a之后，ifc的结构如下图：
 
-![](../../assets/img/go语言系列/interface原理/image-3.png)
+![](https://golangstar.cn/assets/img/go语言系列/interface原理/image-3.png)
 
 赋值过程中，data指针其实还是和空接口一样指向具体类型值，这里指向变量a。tab指针则是指向itab这个结构体，itab结构创建的创建主要就分为3部分：
 
@@ -221,7 +221,7 @@ func itabHashFunc(inter *interfacetype, typ *_type) uintptr {
 
 所以key为整形，所以在实现的时候，go语言采用了空间换时间的思想，通过一个数组来实现，数组的每个元素为itab指针，其结构如下：
 
-![](../../assets/img/go语言系列/interface原理/image-4.png)
+![](https://golangstar.cn/assets/img/go语言系列/interface原理/image-4.png)
 
 我们在查找一个itab是否存在的时候，
 

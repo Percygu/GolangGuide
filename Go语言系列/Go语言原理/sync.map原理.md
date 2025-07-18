@@ -64,7 +64,7 @@ entry这个字段在sync.map里被频繁的用到，他作为dirty这个map的va
 
 sync.Map的底层结构如下图：
 
-![](../../assets/img/go语言系列/sync.map原理/image.png)
+![](https://golangstar.cn/assets/img/go语言系列/sync.map原理/image.png)
 
 在map的结构定义中介绍dirty字段的时候说到，dirty这个map包含在read中除了被expunged(删除)以外的所有元素，下面重点说一下**expunged**这个字段
 
@@ -92,7 +92,7 @@ sync.map.Store()方法既可以用来新增键值对，也可用用来更新键�
 
     * p==expunged，当前key存在于read，但是key不存在于dirty，dirty也不为空，read包含dirty中不存在的key，dirty也包含read中不存在的key，这种情况下p的值为expunged，形式如下图。在这种情况下，不能单单只操作read，还要加锁同步更新dirty，将这个key加入到dirty中，将e.p的保存新传入的value
 
-![](../../assets/img/go语言系列/sync.map原理/image-1.png)
+![](https://golangstar.cn/assets/img/go语言系列/sync.map原理/image-1.png)
 
     * p==nil，key存在于read，此时被标记删除，此时还没有完成dirty的重塑
 
@@ -221,7 +221,7 @@ func (e *entry) tryExpungeLocked() (isExpunged bool) {
 
 store的流程如下图：
 
-![](../../assets/img/go语言系列/sync.map原理/image-2.png)
+![](https://golangstar.cn/assets/img/go语言系列/sync.map原理/image-2.png)
 
 ### **`Load`**
 
@@ -278,7 +278,7 @@ func (m *Map) missLocked() {
 
 load流程如图：
 
-![](../../assets/img/go语言系列/sync.map原理/image-3.png)
+![](https://golangstar.cn/assets/img/go语言系列/sync.map原理/image-3.png)
 
 ### **`Delete`**
 
@@ -354,7 +354,7 @@ func (m *Map) LoadAndDelete(key interface{}) (value interface{}, loaded bool) {
 
 delete流程如图：
 
-![](../../assets/img/go语言系列/sync.map原理/image-4.png)
+![](https://golangstar.cn/assets/img/go语言系列/sync.map原理/image-4.png)
 
 
 `e.delete()`方法
@@ -414,7 +414,7 @@ func (m *Map) Range(f func(key, value interface{}) bool) {
 
 range流程如下图：
 
-![](../../assets/img/go语言系列/sync.map原理/image-5.png)
+![](https://golangstar.cn/assets/img/go语言系列/sync.map原理/image-5.png)
 
 ## p的状态变化
 
@@ -437,25 +437,25 @@ type entry struct {
 
 1. 在一个空的map中加入两个元素假设为key1/value1和key2/value2，由于新加入元素，只会去dirty里面加入，所以加入完了以后，read还是空，dirty含有两个key，key1和key2
 
-![](../../assets/img/go语言系列/sync.map原理/image-6.png)
+![](https://golangstar.cn/assets/img/go语言系列/sync.map原理/image-6.png)
 
 * 此时，在读取连续读取两次，读取调用`load`方法，因为read中没有，所以回去dirty中读取，read未命中次数misses变为2，等于了dirty的长度，这个时候要将dirty提升为read，read中就包含了key1和key2，dirty置为nil，misses清0
 
-![](../../assets/img/go语言系列/sync.map原理/image-7.png)
+![](https://golangstar.cn/assets/img/go语言系列/sync.map原理/image-7.png)
 
 
 
 * 然后执行一次删除操作，删除key1，因为key1在read中存在，所以直接操作read即可，把key1标记删除，所以key1的p对应的状态就变为了nil，此时read.amended为false，并且此时dirty为空，并不包含任何key，所以不需要操作
 
-![](../../assets/img/go语言系列/sync.map原理/image-8.png)
+![](https://golangstar.cn/assets/img/go语言系列/sync.map原理/image-8.png)
 
 * 此时再插入一个新的键值对key3，由于是插入操作，要在dirty中插入，此时发现dirty为nil，所以要重塑dirty，重塑过程是这样，首先创建一个新的空dirty map，然后将read中标记删除为nil的key对应的p标记为expunged，最后将不是expunged状态的键值对都copy到dirty，然后将read.amended置为true，此时可以看到expunged状态出现了
 
-![](../../assets/img/go语言系列/sync.map原理/image-9.png)
+![](https://golangstar.cn/assets/img/go语言系列/sync.map原理/image-9.png)
 
 * 修改key1的值为value0，发现key1存在于read中，此时key1对应的p的状态是expunged，表明key1不存在与dirty，所以不能单单指操作read，还要加锁操作dirty，首先将key1对应p的状态由expunged改为nil，然后将key1加入到dirty中，将p的值修改为新的value，即e.p=\&value0,，此时read中只包含key1和key2，而dirty中包含map的全量key，key1，key2和key3
 
-![](../../assets/img/go语言系列/sync.map原理/image-10.png)
+![](https://golangstar.cn/assets/img/go语言系列/sync.map原理/image-10.png)
 
 通过上面的流程分析，走了一遍map的增删改查，分析了read到dirty中key集合的变化过程，以及key1对应的p的状态变化，可以看到key1的nil和expunged都表示标记删除，二者只有一个区别，就是当p为nil时，此时dirty对应的状态是nil或者dirty不为空且包含这个key，而当p的状态时expunged时，dirty不为nil，且dirty中包含read中没有的key。这里就可以知道，当p的状态为expunged时，对key1的操作不能只操作read，还要加锁操作dirty，而p的状态为nil时，只用操作read即可，不用加锁，性能更高。所以可以看出，虽然二者都表示标记删除，但分为两个状态之后，可以更细粒度的区分操作复杂度，在p的状态为nil时不加锁，尽量保证在能不加锁的时候就不加锁，提升程序性能。从这里分析也可以得知，没有expunged这个状态行不行呢，其实也可以，不过那样就不能根据区分度来判断是不是不用加锁直接操作read就可以了，还要加锁去read中检查一次，这样就降低了程序的性能。
 

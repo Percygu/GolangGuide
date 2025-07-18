@@ -62,7 +62,7 @@ type hchan struct {
 }
 ```
 
-![](../../assets/img/go语言系列/go面试题库/Channel面试题/image.png)
+![](https://golangstar.cn/assets/img/go语言系列/go面试题库/Channel面试题/image.png)
 
 ## 3. 向channel发送数据的过程是怎样的？
 
@@ -115,13 +115,13 @@ func main() {
 
 sender 发现 ch 的 recvq 里有 receiver 在等待着接收，就会出队一个 sudog，把 recvq 里 first 指针的 sudo “推举”出来了，并将其加入到 P 的可运行 goroutine 队列中。然后，sender 把发送元素拷贝到 sudog 的 elem 地址处，最后会调用 goready 将 G1 唤醒，状态变为 runnable。
 
-![](../../assets/img/go语言系列/go面试题库/Channel面试题/image-1.png)
+![](https://golangstar.cn/assets/img/go语言系列/go面试题库/Channel面试题/image-1.png)
 
 当调度器光顾 G1 时，将 G1 变成 running 状态，执行 goroutineA 接下来的代码。G 表示其他可能有的 goroutine。
 
 这里其实涉及到一个协程写另一个协程栈的操作。有两个 receiver 在 channel 的一边虎视眈眈地等着，这时 channel 另一边来了一个 sender 准备向 channel 发送数据，为了高效，用不着通过 channel 的 buf “中转”一次，直接从源地址把数据 copy 到目的地址就可以了，效率高啊！
 
-![](../../assets/img/go语言系列/go面试题库/Channel面试题/image-3.png)
+![](https://golangstar.cn/assets/img/go语言系列/go面试题库/Channel面试题/image-3.png)
 
 上图是一个示意图，`3` 会被拷贝到 G1 栈上的某个位置，也就是 val 的地址处，保存在 elem 字段。
 
@@ -231,7 +231,7 @@ type scase struct {
 }
 ```
 
-![](../../assets/img/go语言系列/go面试题库/Channel面试题/image-2.png)
+![](https://golangstar.cn/assets/img/go语言系列/go面试题库/Channel面试题/image-2.png)
 
 在默认的情况下，select 语句会在编译阶段经过如下过程的处理：
 

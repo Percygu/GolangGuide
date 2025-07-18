@@ -234,7 +234,7 @@ func removeChild(parent Context, child canceler) {
 
 移除前后效果如下图所示：
 
-![](../../assets/img/go语言系列/context原理/image.png)
+![](https://golangstar.cn/assets/img/go语言系列/context原理/image.png)
 
 在用户层面，创建cancelCtx的方法其实我们你之前也接触过，就是withCancel方法，在平常代码中，我们一般用这个方法来派生一个可以用cancel取消函数取消的context，常规用法如下：
 
@@ -439,7 +439,7 @@ func (c *valueCtx) Value(key interface{}) interface{} {
 
 方法很简单，就是向上递归的查找key所对应的value，如果找到则直接返回 value，否则查找该context的父context，一直顺着 context 向上，最终找到根节点（一般是 emptyCtx），直接返回一个 nil。查找过程如下图：
 
-![](../../assets/img/go语言系列/context原理/image-1.png)
+![](https://golangstar.cn/assets/img/go语言系列/context原理/image-1.png)
 
 从定义可以出valueCtx中存储着一对键值对，具体是怎么用的呢？同样我们一般使用withValue方法派生出一个valueCtx
 

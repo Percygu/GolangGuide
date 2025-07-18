@@ -44,7 +44,7 @@ Go的Context主要解决三个核心问题：**超时控制、取消信号传播
 
 另外Context还能传递请求级的元数据，比如用户ID、请求ID等，这在分布式链路追踪中特别有用。需要注意的是，Context应该作为函数的第一个参数传递，不要存储在结构体中，并且传递的数据应该是请求级别的，不要滥用。
 
-![](../../assets/img/go语言系列/go面试题库/Context面试题/image-1.png)
+![](https://golangstar.cn/assets/img/go语言系列/go面试题库/Context面试题/image-1.png)
 
 ## 3. Context.Value的查找过程是怎样的
 
@@ -52,7 +52,7 @@ Context.Value的查找过程是一个**链式递归查找的过程**，从当前
 
 具体流程是：当调用`ctx.Value(key)`时，首先检查当前Context是否包含这个key，如果当前层没有，就会调用`parent.Value(key)`继续向上查找。这个过程会一直递归下去，直到找到匹配的key返回对应的value，或者查找到根Context返回nil。
 
-![](../../assets/img/go语言系列/go面试题库/Context面试题/image.png)
+![](https://golangstar.cn/assets/img/go语言系列/go面试题库/Context面试题/image.png)
 
 ## 4. Context如何被取消
 
@@ -64,5 +64,5 @@ Context的取消是通过**channel关闭信号**实现的，主要有三种取�
 
 最后是**级联取消**，当父Context被取消时，所有子Context会自动被取消，这是通过Context树的结构实现的。
 
-![](../../assets/img/go语言系列/go面试题库/Context面试题/image-2.png)
+![](https://golangstar.cn/assets/img/go语言系列/go面试题库/Context面试题/image-2.png)
 

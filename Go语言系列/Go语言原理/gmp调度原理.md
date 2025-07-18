@@ -38,7 +38,7 @@ tags:
 
 在聊GMP之前，我们得先搞明白两个老朋友：**线程（Thread）** 和 **协程（Coroutine）**。
 
-![](../../assets/img/go语言系列/gmp调度/image-4.png)
+![](https://golangstar.cn/assets/img/go语言系列/gmp调度/image-4.png)
 
 * **线程（Thread）**：这家伙是操作系统的大内总管——内核（Kernel）眼里的最小执行单元。它的生老病死、工作调度，全得听内核的号令。你可以把它想象成一个正式工，有编制，但每次调度（切换）都得走一套复杂的流程，成本比较高。
 
@@ -50,7 +50,7 @@ tags:
 
 Go语言选择的并发实现，就是我们所熟知的 **goroutine**。你可以把它看作是Go对协程的"超级魔改版"。它并不是一个孤立的概念，而是整个 **GMP调度体系** 的核心产物。
 
-![](../../assets/img/go语言系列/gmp调度/image-3.png)
+![](https://golangstar.cn/assets/img/go语言系列/gmp调度/image-3.png)
 
 正是因为有了GMP这套精妙的架构，goroutine才拥有了超越原生协程的两大核心优势：
 
@@ -70,7 +70,7 @@ Go语言选择的并发实现，就是我们所熟知的 **goroutine**。你可�
 
 * **P（Processor）**：P是调度器，是GMP模型中的"中枢大脑"。M必须获取到一个P，才能开始调度和执行G。P的数量决定了同一时间最多有多少个M可以处于运行状态，这个数量通常由 `GOMAXPROCS` 环境变量决定。P还有一个非常重要的职责：它自带一个本地的goroutine队列，我们称之为 **LRQ (Local Run Queue)**。
 
-![](../../assets/img/go语言系列/gmp调度/image-2.png)
+![](https://golangstar.cn/assets/img/go语言系列/gmp调度/image-2.png)
 
 现在，我们把目光聚焦到存放G的"容器"上。Go的设计非常巧妙，它有两种队列：
 
@@ -100,13 +100,13 @@ Go语言选择的并发实现，就是我们所熟知的 **goroutine**。你可�
 
 #### 1.4.1 内存管理
 
-![](../../assets/img/go语言系列/gmp调度/内存管理修改.png)
+![](https://golangstar.cn/assets/img/go语言系列/gmp调度/内存管理修改.png)
 
 Go的内存管理借鉴了Google自家的TCMalloc思想，并为GMP模型量身定做了优化。它为每个P都配备了一个私有的内存缓存——`mcache`。当一个P上的G需要分配小对象时，可以直接从这个私有的`mcache`里拿，完全无锁，速度飞快。
 
 #### 1.4.2 并发工具（Mutex, Channel）
 
-![](../../assets/img/go语言系列/gmp调度/并发工具修改.png)
+![](https://golangstar.cn/assets/img/go语言系列/gmp调度/并发工具修改.png)
 
 你有没有想过，为什么在Go里一个channel的读写阻塞了，或者一个Mutex锁住了，并不会把整个线程都卡死？
 
@@ -116,7 +116,7 @@ Go的内存管理借鉴了Google自家的TCMalloc思想，并为GMP模型量身�
 
 #### 1.4.3 IO多路复用（netpoll）
 
-![](../../assets/img/go语言系列/gmp调度/IO多路复用修改.png)
+![](https://golangstar.cn/assets/img/go语言系列/gmp调度/IO多路复用修改.png)
 
 对于网络IO，Go采用了Linux下性能强悍的epoll技术。但为了避免epoll的等待操作阻塞整个M，Go设计了一套巧妙的`netpoll`机制。它将IO阻塞操作转换成了G级别的阻塞（`gopark`），当IO就绪时，再通过`goready`唤醒对应的G。这样，IO操作也被完美地融入了GMP的调度体系中。
 
@@ -128,7 +128,7 @@ Go的内存管理借鉴了Google自家的TCMalloc思想，并为GMP模型量身�
 
 ### 2.1 G的结构（goroutine）
 
-![](../../assets/img/go语言系列/gmp调度/g的结构修改.png)
+![](https://golangstar.cn/assets/img/go语言系列/gmp调度/g的结构修改.png)
 
 `g`结构体是goroutine的实体，我们来看看它的关键字段：
 
@@ -176,7 +176,7 @@ type g struct {
 
 ### 2.2 M的结构（Machine）
 
-![](../../assets/img/go语言系列/gmp调度/m的结构修改.png)
+![](https://golangstar.cn/assets/img/go语言系列/gmp调度/m的结构修改.png)
 
 `m`结构体是内核线程的抽象，核心字段如下：
 
@@ -209,7 +209,7 @@ type m struct {
 
 ### 2.3 P的结构（Processor）
 
-![](../../assets/img/go语言系列/gmp调度/p的结构修改.png)
+![](https://golangstar.cn/assets/img/go语言系列/gmp调度/p的结构修改.png)
 
 `p`结构体是调度器，是连接G和M的桥梁，核心字段如下：
 
@@ -248,7 +248,7 @@ type p struct {
 
 ### 2.4 全局调度器（schedt）
 
-![](../../assets/img/go语言系列/gmp调度/schedt修改.png)
+![](https://golangstar.cn/assets/img/go语言系列/gmp调度/schedt修改.png)
 
 除了G、M、P这三大组件，还有一个全局的 `schedt` 结构体，它掌管着全局资源，访问它需要加锁。
 
@@ -308,7 +308,7 @@ func main() {
 
 ### 3.2 普通G的创建之旅
 
-![](../../assets/img/go语言系列/gmp调度/g的创建修改.png)
+![](https://golangstar.cn/assets/img/go语言系列/gmp调度/g的创建修改.png)
 
 除了`main`这个特例，我们自己启动的goroutine都会经历一个标准的创建流程。比如这段代码：
 
@@ -374,7 +374,7 @@ func newproc(fn *funcval) {
 
 ### 3.3 从 `g0` 到 `g` 的切换
 
-![](../../assets/img/go语言系列/gmp调度/g0与g修改.png)
+![](https://golangstar.cn/assets/img/go语言系列/gmp调度/g0与g修改.png)
 
 每个M都有一个自己的`g0`，`g0`的工作就是不断地调用`schedule`函数来寻找可执行的G。所以，一个M的生命周期，就是在执行`g0`（找任务）和执行普通`g`（做任务）之间循环往复。
 
@@ -436,7 +436,7 @@ func execute(gp *g, inheritTime bool) {
 
 `findrunnable`是调度循环中最核心的函数，它寻找G的策略体现了Go调度器的智慧。
 
-![](../../assets/img/go语言系列/gmp调度/寻找g修改.png)
+![](https://golangstar.cn/assets/img/go语言系列/gmp调度/寻找g修改.png)
 
 我们来梳理一下它的寻找步骤：
 
@@ -758,7 +758,7 @@ func stopm(){
 
 ### 4.1 功成身退：执行结束
 
-![](../../assets/img/go语言系列/gmp调度/image.png)
+![](https://golangstar.cn/assets/img/go语言系列/gmp调度/image.png)
 
 当一个G的任务执行完毕，它会调用`goexit1`，这是一个主动的"退休"申请。
 
@@ -805,7 +805,7 @@ func goexit0(gp *g) {
 
 ### 4.2 高风亮节：主动让渡
 
-![](../../assets/img/go语言系列/gmp调度/image-1.png)
+![](https://golangstar.cn/assets/img/go语言系列/gmp调度/image-1.png)
 
 我们可以通过在代码里调用 `runtime.Gosched()` 来手动让一个G让出CPU。这个函数会做和`goexit1`类似的事情：
 
@@ -850,7 +850,7 @@ func goschedImpl(gp *g) {
 
 ### 4.3 情非得已：阻塞让渡
 
-![](../../assets/img/go语言系列/gmp调度/阻塞让渡修改.png)
+![](https://golangstar.cn/assets/img/go语言系列/gmp调度/阻塞让渡修改.png)
 
 这是最常见的一种让渡方式。当G执行到需要等待某个外部条件的地方（比如读一个空的channel，或者等待一个锁），它就会被阻塞。
 
@@ -950,7 +950,7 @@ func ready(gp *g, traceskip int, next bool){
 
 当然不行！Go调度器还有一个"霸道总裁"的角色来强制干预，就是**抢占（Preemption）**。一个由外部力量发起的、为了维护整个系统公平和效率的"强制让位"过程。
 
-![](../../assets/img/go语言系列/gmp调度/抢占设计修改.png)
+![](https://golangstar.cn/assets/img/go语言系列/gmp调度/抢占设计修改.png)
 
 ### 5.1 幕后英雄：无处不在的sysmon
 
@@ -958,7 +958,7 @@ func ready(gp *g, traceskip int, next bool){
 
 你可以把它想象成一个永不休息的"巡逻兵"，它独立于普通的G-P-M调度模型，持续地在后台循环执行。这个线程在整个程序生命周期里是全局唯一的，就像一个大管家，不知疲倦地监视着整个Go程序的运行状态。
 
-![](../../assets/img/go语言系列/gmp调度/监控线程修改.png)
+![](https://golangstar.cn/assets/img/go语言系列/gmp调度/监控线程修改.png)
 
 `sysmon` 的工作是一个永不停歇的循环，它主要关心三件大事儿：
 
@@ -1034,7 +1034,7 @@ Go的策略非常聪明：**人走可以，但办公桌得留下！**
 
 4. **寻找新机会**：脱离了M的P，可以去和其他空闲的M结合，继续执行其他Goroutine，一点都不耽误事儿。
 
-![](../../assets/img/go语言系列/gmp调度/系统调用修改.png)
+![](https://golangstar.cn/assets/img/go语言系列/gmp调度/系统调用修改.png)
 
 这个过程主要发生在 `reentersyscall` 函数中：
 
@@ -1131,7 +1131,7 @@ func exitsyscall0(gp *g) {
 }
 ```
 
-![](../../assets/img/go语言系列/gmp调度/retake方法修改.png)
+![](https://golangstar.cn/assets/img/go语言系列/gmp调度/retake方法修改.png)
 
 你可能会问，这和 `sysmon` 有什么关系？关系大了！`sysmon` 会在它的 `retake` 检查中，遍历所有的P。如果发现某个P长时间处于 `_Psyscall` 状态（默认超过10ms），或者这个P虽然在syscall，但它的本地队列里还有其他Goroutine在排队，`sysmon` 就会认为不能再等了，必须执行抢占。 它会调用 `handoffp`，强制把这个P从syscall的M那里"抢"过来，分配给一个新的或者空闲的M，去执行P本地队列里的其他任务。
 
@@ -1188,7 +1188,7 @@ func handoffp(_p_ *p) {
 
 除了系统调用，另一种需要抢占的场景就是Goroutine运行时间过长。比如一个纯计算的循环，没有任何IO或channel操作，它就会像个"钉子户"一样霸占着CPU。
 
-![](../../assets/img/go语言系列/gmp调度/运行超时修改.png)
+![](https://golangstar.cn/assets/img/go语言系列/gmp调度/运行超时修改.png)
 
 `sysmon` 在 `retake` 函数中同样会检查每个处于 `_Prunning` 状态的P。它会看当前P上的Goroutine从何时开始执行（`schedwhen`），如果执行时间超过了一个阈值（`forcePreemptNS`，通常是10ms），`sysmon` 就会认为需要抢占了。
 
@@ -1241,7 +1241,7 @@ func preemptone(_p_ *p) bool {
 
 这个 `stackguard0` 标志位非常关键。Goroutine在执行函数调用时，尤其是可能导致栈扩容的场景下，会检查这个标志位。当它发现 `stackguard0` 变成了 `stackPreempt`，就知道："哦，调度器想让我让位了"。于是，它就会很"自觉"地停止当前工作，调用 `gopreempt_m`，将自己重新放回全局队列，让出CPU。这个过程就叫做**协作式抢占**。
 
-![](../../assets/img/go语言系列/gmp调度/协作式抢占修改.png)
+![](https://golangstar.cn/assets/img/go语言系列/gmp调度/协作式抢占修改.png)
 
 这个检查点通常在 `newstack` 函数中，也就是栈扩容的逻辑里：
 
@@ -1322,7 +1322,7 @@ func signalM(mp *m, sig int) {
 
 Go程序启动时，会注册一个信号处理器 `sighandler` 来处理各种信号，其中就包括了我们的 `sigPreempt`
 
-![](../../assets/img/go语言系列/gmp调度/非协作式抢占修改.png)
+![](https://golangstar.cn/assets/img/go语言系列/gmp调度/非协作式抢占修改.png)
 
 当M接收到 `sigPreempt` 信号后，操作系统会中断M的当前执行，转而去执行`sighandler`。 信号处理函数会发现这是一个抢占信号，然后检查当前的Goroutine是否满足被抢占的条件（例如，没有在执行一些敏感的运行时代码）。
 

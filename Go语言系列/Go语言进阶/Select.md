@@ -20,7 +20,7 @@ tags:
 #### 传统阻塞IO
 对于每一个网络IO事件，操作系统都会起一个线程去处理，在IO事件没准备好的时候，当前线程就会一直阻塞。
 
-![传统阻塞IO](../../assets/img/go语言系列/select/select1.png)
+![传统阻塞IO](https://golangstar.cn/assets/img/go语言系列/select/select1.png)
 
 优缺点：
 - 优点：逻辑简单，在阻塞等待期间线程会挂起，不会占用 CPU 资源
@@ -29,7 +29,7 @@ tags:
 #### IO多路复用
 IO多路复用的基本原理如下图所示：
 
-![IO多路复用](../../assets/img/go语言系列/select/select2.png)
+![IO多路复用](https://golangstar.cn/assets/img/go语言系列/select/select2.png)
 
 优缺点：
 - 优点：通过复用一个线程处理了多个IO事件，无需对额外过多的线程维护管理，资源和效率上都获得了提升

@@ -94,7 +94,7 @@ type sudog struct {
 
 channel的底层结构图：
 
-![](../../assets/img/go语言系列/channel原理/image.png)
+![](https://golangstar.cn/assets/img/go语言系列/channel原理/image.png)
 
 在这个例子中，channel的长度buf为8，元素个数为4，其中有四个元素100，200，300，400。可以发送的索引sendx为4，可以接受的索引为recvq为0
 
@@ -299,7 +299,7 @@ func chansend(c *hchan, ep unsafe.Pointer, block bool, callerpc uintptr) bool {
 
 直接看释义可能比较抽象，下面我们通过我们结合发送流程图，来看看一下channel底层是怎么运作的：
 
-![](../../assets/img/go语言系列/channel原理/image-1.png)
+![](https://golangstar.cn/assets/img/go语言系列/channel原理/image-1.png)
 
 我们先从发送视角来看，如果阻塞会发生什么？
 
@@ -309,15 +309,15 @@ func chansend(c *hchan, ep unsafe.Pointer, block bool, callerpc uintptr) bool {
 
 这里m表示内核线程，goroutine只有绑定到内核线程才能被执行，这里解绑m就会让出内核线程。调度模型相关后再后面做详细介绍
 
-![](../../assets/img/go语言系列/channel原理/boxcn9ULtLcD2jviAdDERfbrNNb.png)
+![](https://golangstar.cn/assets/img/go语言系列/channel原理/boxcn9ULtLcD2jviAdDERfbrNNb.png)
 
 那么什么时候再激活呢？需要等到有其它协程消费这个 channel，我们以 g2 为例子，即 g2 通过channel 操作，从 buf 中获得一个元素。
 
-![](../../assets/img/go语言系列/channel原理/image-2.png)
+![](https://golangstar.cn/assets/img/go语言系列/channel原理/image-2.png)
 
 这时候会查看 sendq 的情况，将第一个节点的 elem 数据直接放入 buf。然后将处于等待中的 g1 变为可执行状态，等待下次调度。做完这些之后，会将 g1 的等待信息从 sendq 移除。
 
-![](../../assets/img/go语言系列/channel原理/boxcnd31UrNwnvthDJwEnkwotle.png)
+![](https://golangstar.cn/assets/img/go语言系列/channel原理/boxcnd31UrNwnvthDJwEnkwotle.png)
 
 这是有缓冲管道的例子，如果是无缓冲管道，elem 会直接写入到 g2 的内存再激活g1，流程是一致的
 
@@ -480,7 +480,7 @@ func chanrecv(c *hchan, ep unsafe.Pointer, block bool) (selected, received bool)
 
 消费流程如下图所示
 
-![](../../assets/img/go语言系列/channel原理/image-3.png)
+![](https://golangstar.cn/assets/img/go语言系列/channel原理/image-3.png)
 
 针对channel的不同状态，从channel读取数据结果如下：
 

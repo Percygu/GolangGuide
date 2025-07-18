@@ -32,11 +32,11 @@ type hmap struct {
 }
 ```
 
-![](../../assets/img/go语言系列/go面试题库/Map面试题/image-2.png)
+![](https://golangstar.cn/assets/img/go语言系列/go面试题库/Map面试题/image-2.png)
 
 bmap结构如下：
 
-![](../../assets/img/go语言系列/go面试题库/Map面试题/image-1.png)
+![](https://golangstar.cn/assets/img/go语言系列/go面试题库/Map面试题/image-1.png)
 
 ## 2. Go语言Map的遍历是有序的还是无序的？
 
@@ -154,7 +154,7 @@ func main() {
 
 不会，`delete`一个key，并不会立刻释放或收缩Map占用的内存。具体来说，`delete(m, key)` 这个操作，只是把key和value对应的内存块标记为“空闲”，让它们的内容可以被后续的垃圾回收（GC）处理掉。但是，Map底层为了存储这些键值对而分配的“桶”（buckets）数组，它的规模是不会缩小的。只有在置空这个map的时候，整个map的空间才会被垃圾回后释放
 
-![](../../assets/img/go语言系列/go面试题库/Map面试题/image.png)
+![](https://golangstar.cn/assets/img/go语言系列/go面试题库/Map面试题/image.png)
 
 ## 11. Map可以边遍历边删除吗
 

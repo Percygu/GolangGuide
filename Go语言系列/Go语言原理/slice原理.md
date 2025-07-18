@@ -30,7 +30,7 @@ type slice struct {
 }
 ```
 
-![](../../assets/img/go语言系列/slice原理/image.png)
+![](https://golangstar.cn/assets/img/go语言系列/slice原理/image.png)
 
 slice结构 包含三个字段，array 类型为unsafe.Pointer，还有两个int类型的字段len和cap。
 
@@ -133,7 +133,7 @@ arr2=[100 4], cap=6
 
 这一点尤其需要注意，在我们更改新切片的值的时候，可能会改变原切片。
 
-![](../../assets/img/go语言系列/slice原理/image-1.png)
+![](https://golangstar.cn/assets/img/go语言系列/slice原理/image-1.png)
 
 如上图所示，比如通过截取的方式由slice派生出一个新额的切片slice1，其实底层他们都是指向的同一块数据区域，只是两个切片的下表对应的底层数组的数据不同，`slice[1]=`2，而`slice1[0]=`2，他们指向同一个元素，所以当修改`slice1[0]`的值，势必会影响原始数组。
 
@@ -176,7 +176,7 @@ arr4=[100 2 3]
 
 切片的赋值可以这样理解，如下如
 
-![](../../assets/img/go语言系列/slice原理/image-2.png)
+![](https://golangstar.cn/assets/img/go语言系列/slice原理/image-2.png)
 
 复制操作原理其实很好理解，复制其实是复制了前面所说的slice 这个结构体，而在slice结构中真正与数据相关的其实是一个只想指向底层数组的一个array指针，所以这里其实是复制了一个指针而已，但是两个不同的指针还是指向同一块区域，所以对一个切片的修改会影响到另一个。
 
@@ -220,7 +220,7 @@ arr3=[1 3], addr3=0xc000098090
 
 假设原切片`arr1`中由4个元素`1，2，3，4`，我们执行语句`arr2=append(arr1,5)`，其过程如下图：
 
-![](../../assets/img/go语言系列/slice原理/image-3.png)
+![](https://golangstar.cn/assets/img/go语言系列/slice原理/image-3.png)
 
 最终会有两个slice结构体，但是他们都指向同一块内存区域。
 
@@ -236,7 +236,7 @@ arr3=[1 3], addr3=0xc000098090
 
 1.18及以后
 
-![](../../assets/img/go语言系列/slice原理/image-4.png)
+![](https://golangstar.cn/assets/img/go语言系列/slice原理/image-4.png)
 
 扩容公式：
 ```

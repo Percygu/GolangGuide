@@ -28,7 +28,7 @@ type eface struct {
 }
 ```
 
-![](../../assets/img/go语言系列/go面试题库/Interface面试题/eface修改.png)
+![](https://golangstar.cn/assets/img/go语言系列/go面试题库/Interface面试题/eface修改.png)
 
 
 
@@ -53,7 +53,7 @@ type itab struct {
 }
 ```
 
-![](../../assets/img/go语言系列/go面试题库/Interface面试题/iface修改.png)
+![](https://golangstar.cn/assets/img/go语言系列/go面试题库/Interface面试题/iface修改.png)
 
 ## 2. iface和eface的区别是什么？
 

@@ -81,7 +81,7 @@ word := "Hello"
 ```
 其底层结构如下图：
 
-![](../../assets/img/go语言系列/string原理/string原理1.png)
+![](https://golangstar.cn/assets/img/go语言系列/string原理/string原理1.png)
 
 在本例中，`len` 的长度为5，表示 `word` 这个字符串占用的字节数，每个字节的值如图中所示。这里需要注意，`len` 字段存储的是实际的字节数，而不是字符数，所以对于非单字节编码的字符，其结果可能多于字符个数。
 
@@ -162,14 +162,14 @@ HAllo
 2. 构建 `string`对象，指针地址为`addr`，`len`字段赋值为`len`（`string.str = addr；string.len = len；`）
 3. 将原切片中数据拷贝到新申请的`string`中指针指向的内存空间
 
-![string与[]byte的转化](../../assets/img/go语言系列/string原理/string原理2.png)
+![string与[]byte的转化](https://golangstar.cn/assets/img/go语言系列/string原理/string原理2.png)
 
 `string`转化为`byte`数组同样简单，大致分为两步：
 
 1. 新申请切片内存空间
 2. 将`string`中指针执行内存区域的内容拷贝到新切片
 
-![string与[]byte的转化](../../assets/img/go语言系列/string原理/string原理3.png)
+![string与[]byte的转化](https://golangstar.cn/assets/img/go语言系列/string原理/string原理3.png)
 
 ## []byte转化为string是否一定会发生内存拷贝
 
