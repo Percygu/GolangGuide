@@ -18,7 +18,7 @@ GolangGuide是一个专注Go语言学习的知识库，宗旨是：让天下没�
 - [**Go语言前景**](https://golangstar.cn/go_series/go_prospect/go_prospect.html)：为什么选择Go？Go的应用场景分析
 
 ### **环境准备篇** 👇
-- [**Go环境搭建**](https://golangstar.cn/go_series/go_environment/go_%20environment.html)：从安装到配置的完整指南
+- [**Go环境搭建**](https://golangstar.cn/go_series/go_environment/go_environment.html)：从安装到配置的完整指南
 
 ### **语言基础篇** 👇
 - [**Go语言代码结构**](https://golangstar.cn/go_series/go_base/go_code_structure.html)：理解Go程序的组织方式
